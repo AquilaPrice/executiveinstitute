@@ -126,9 +126,66 @@
     display: flex;
     animation: marquee 30s linear infinite;
   }
+
+  .heading-serif {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.02;
+  }
+
+  /* Multicolor outer glow for hero search */
+  .glow-multi {
+    box-shadow:
+      0 0 0 1px hsl(0 0% 100% / 0.6),
+      0 10px 40px -10px hsl(220 70% 18% / 0.35),
+      0 0 60px -10px hsl(358 80% 58% / 0.55),
+      0 0 80px -20px hsl(220 75% 50% / 0.55),
+      0 0 100px -30px hsl(280 70% 60% / 0.45);
+  }
+
+  /* Typing cursor */
+  .typing-caret::after {
+    content: '';
+    display: inline-block;
+    width: 2px;
+    height: 1em;
+    margin-left: 4px;
+    background: currentColor;
+    vertical-align: -0.15em;
+    animation: caret-blink 1s steps(1) infinite;
+  }
 }
 
 @keyframes marquee {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
+}
+
+@keyframes marquee-vertical {
+  from { transform: translateY(0); }
+  to { transform: translateY(-50%); }
+}
+
+@keyframes marquee-vertical-reverse {
+  from { transform: translateY(-50%); }
+  to { transform: translateY(0); }
+}
+
+@keyframes caret-blink {
+  0%, 50% { opacity: 1; }
+  50.01%, 100% { opacity: 0; }
+}
+
+.marquee-v {
+  display: flex;
+  flex-direction: column;
+  animation: marquee-vertical 30s linear infinite;
+}
+.marquee-v.reverse {
+  animation: marquee-vertical-reverse 30s linear infinite;
+}
+.marquee-v-mask {
+  mask-image: linear-gradient(to bottom, transparent, black 12%, black 88%, transparent);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, black 12%, black 88%, transparent);
 }
