@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Mail, Phone, MapPin, Send, Globe2 } from "lucide-react";
 import Layout from "@/components/Layout";
 import Reveal from "@/components/Reveal";
+import PageHero from "@/components/PageHero";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -25,15 +26,15 @@ const Contact = () => {
 
   return (
     <Layout>
-      <section className="relative overflow-hidden bg-gradient-hero bg-[length:200%_200%] animate-gradient-shift text-white">
-        <div className="container-tight py-24 md:py-32 text-center">
-          <p className="eyebrow justify-center text-accent-glow animate-fade-in-down">Contact</p>
-          <h1 className="heading-xl mt-4 animate-fade-in" style={{ animationDelay: "150ms" }}>Get In Touch</h1>
-          <p className="mt-5 max-w-2xl mx-auto text-white/85 text-lg animate-fade-in" style={{ animationDelay: "300ms" }}>
-            We'd love to hear from you. Reach out about enrollment, partnership, or anything else.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        badgeTag="Contact"
+        title={
+          <>
+            Get In <span className="text-accent-glow">Touch.</span>
+          </>
+        }
+        subtitle="We'd love to hear from you. Reach out about enrollment, partnership, or anything else."
+      />
 
       <section className="section">
         <div className="container-tight grid lg:grid-cols-5 gap-10">
