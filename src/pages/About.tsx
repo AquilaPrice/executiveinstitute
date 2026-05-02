@@ -1,27 +1,46 @@
 import { Target, Eye, Compass, Heart, Award, Users } from "lucide-react";
 import Layout from "@/components/Layout";
 import Reveal from "@/components/Reveal";
+import PageHero from "@/components/PageHero";
+import VerticalMarquee from "@/components/VerticalMarquee";
 import about from "@/assets/about.jpg";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
-const PageHeader = ({ eyebrow, title, sub }: { eyebrow: string; title: string; sub: string }) => (
-  <section className="relative overflow-hidden bg-gradient-hero bg-[length:200%_200%] animate-gradient-shift text-white">
-    <div className="container-tight py-24 md:py-32 text-center">
-      <p className="eyebrow justify-center text-accent-glow animate-fade-in-down">{eyebrow}</p>
-      <h1 className="heading-xl mt-4 animate-fade-in" style={{ animationDelay: "150ms" }}>{title}</h1>
-      <p className="mt-5 max-w-2xl mx-auto text-white/85 text-lg animate-fade-in" style={{ animationDelay: "300ms" }}>{sub}</p>
+const values = [
+  { icon: Heart, t: "Integrity", d: "We do what is right, always." },
+  { icon: Award, t: "Excellence", d: "We pursue the highest standards in all we do." },
+  { icon: Users, t: "Community", d: "We grow stronger when we grow together." },
+  { icon: Compass, t: "Purpose", d: "We help every learner discover and live theirs." },
+  { icon: Target, t: "Discipline", d: "Consistency is the bridge between goals and reality." },
+  { icon: Eye, t: "Vision", d: "We see further so our learners can go further." },
+];
+
+const ValueTile = ({ icon: Icon, t, d }: { icon: any; t: string; d: string }) => (
+  <article className="bg-card border border-border rounded-2xl p-6 shadow-card hover:shadow-elegant transition-all">
+    <div className="h-11 w-11 rounded-xl bg-gradient-accent grid place-items-center text-accent-foreground shadow-glow">
+      <Icon className="h-5 w-5" />
     </div>
-  </section>
+    <h3 className="mt-4 font-bold text-primary">{t}</h3>
+    <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{d}</p>
+  </article>
 );
 
 const About = () => {
+  const col1 = values.filter((_, i) => i % 2 === 0);
+  const col2 = values.filter((_, i) => i % 2 === 1);
+
   return (
     <Layout>
-      <PageHeader
-        eyebrow="About Us"
-        title="Our Story"
-        sub="A movement to raise individuals who are educated, disciplined, confident, and purpose-driven."
+      <PageHero
+        badgeTag="About"
+        title={
+          <>
+            Our Story.<br />
+            <span className="text-accent-glow">Our Mission.</span>
+          </>
+        }
+        subtitle="A movement to raise individuals who are educated, disciplined, confident, and purpose-driven."
       />
 
       <section className="section">
@@ -31,7 +50,9 @@ const About = () => {
           </Reveal>
           <Reveal delay={150}>
             <p className="eyebrow">Our Story</p>
-            <h2 className="heading-lg mt-3 text-primary">Education with <span className="text-accent">purpose.</span></h2>
+            <h2 className="heading-serif text-4xl md:text-5xl mt-3 text-primary">
+              Education with <span className="text-accent">purpose.</span>
+            </h2>
             <p className="mt-5 text-muted-foreground text-lg leading-relaxed">
               We are committed to raising individuals who are not only educated but also disciplined,
               confident, and purpose-driven. Our work spans children, teens, and adults — building the
@@ -61,30 +82,24 @@ const About = () => {
         </div>
       </section>
 
-      <section className="section">
-        <div className="container-tight">
-          <Reveal className="text-center max-w-2xl mx-auto">
-            <p className="eyebrow justify-center">Our Values</p>
-            <h2 className="heading-lg mt-3 text-primary">What We Stand For</h2>
+      {/* Values — vertical marquee */}
+      <section className="section overflow-hidden">
+        <div className="container-tight grid lg:grid-cols-2 gap-14 items-center">
+          <Reveal>
+            <p className="eyebrow">Our Values</p>
+            <h2 className="heading-serif text-4xl md:text-5xl mt-3 text-primary">
+              What We <span className="text-accent">Stand For</span>
+            </h2>
+            <p className="mt-5 text-muted-foreground text-lg max-w-md">
+              Six values shape every program, every classroom and every conversation we have with learners.
+            </p>
+            <Button asChild variant="hero" size="lg" className="mt-8">
+              <Link to="/programs">Explore Our Programs</Link>
+            </Button>
           </Reveal>
-          <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {[
-              { icon: Heart, t: "Integrity", d: "We do what is right, always." },
-              { icon: Award, t: "Excellence", d: "We pursue the highest standards." },
-              { icon: Users, t: "Community", d: "We grow stronger together." },
-              { icon: Compass, t: "Purpose", d: "We help every learner find theirs." },
-            ].map((v, i) => (
-              <Reveal key={v.t} delay={i * 80}>
-                <div className="bg-card border border-border rounded-xl p-6 text-center hover:shadow-elegant transition-all">
-                  <v.icon className="mx-auto h-8 w-8 text-accent" />
-                  <p className="mt-3 font-bold text-primary">{v.t}</p>
-                  <p className="mt-1 text-sm text-muted-foreground">{v.d}</p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-          <div className="text-center mt-12">
-            <Button asChild variant="hero" size="lg"><Link to="/programs">Explore Our Programs</Link></Button>
+          <div className="grid grid-cols-2 gap-5">
+            <VerticalMarquee duration={36} items={col1.map((v) => <ValueTile {...v} />)} />
+            <VerticalMarquee reverse duration={40} items={col2.map((v) => <ValueTile {...v} />)} />
           </div>
         </div>
       </section>

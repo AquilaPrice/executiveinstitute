@@ -1,13 +1,34 @@
 import { useState } from "react";
-import { GraduationCap, UserCheck, Users, Award, Send, Building2 } from "lucide-react";
+import { GraduationCap, UserCheck, Users, Award, Send, Building2, Handshake, Globe2 } from "lucide-react";
 import Layout from "@/components/Layout";
 import Reveal from "@/components/Reveal";
+import PageHero from "@/components/PageHero";
+import VerticalMarquee from "@/components/VerticalMarquee";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import partnership from "@/assets/partnership.jpg";
+
+const focusAreas = [
+  { icon: GraduationCap, t: "Student Development", d: "Tailored programs that build academic and life skills." },
+  { icon: UserCheck, t: "Teacher Training", d: "Equipping educators with modern teaching strategies." },
+  { icon: Users, t: "Parenting Sessions", d: "Empowering parents to raise confident, grounded children." },
+  { icon: Award, t: "Leadership Workshops", d: "Cultivating leaders within your team or institution." },
+  { icon: Handshake, t: "Corporate Programs", d: "Soft-skill and leadership training for staff teams." },
+  { icon: Globe2, t: "Community Outreach", d: "Joint impact projects across schools and communities." },
+];
+
+const FocusTile = ({ icon: Icon, t, d }: { icon: any; t: string; d: string }) => (
+  <article className="bg-card border border-border rounded-2xl p-6 shadow-card hover:shadow-elegant transition-all">
+    <div className="h-11 w-11 rounded-lg bg-gradient-accent text-accent-foreground grid place-items-center shadow-glow">
+      <Icon className="h-5 w-5" />
+    </div>
+    <p className="mt-4 font-bold text-primary">{t}</p>
+    <p className="mt-1 text-sm text-muted-foreground">{d}</p>
+  </article>
+);
 
 const Partnership = () => {
   const [submitting, setSubmitting] = useState(false);
@@ -22,42 +43,31 @@ const Partnership = () => {
     }, 700);
   };
 
+  const col1 = focusAreas.filter((_, i) => i % 2 === 0);
+  const col2 = focusAreas.filter((_, i) => i % 2 === 1);
+
   return (
     <Layout>
-      <section className="relative overflow-hidden bg-gradient-hero bg-[length:200%_200%] animate-gradient-shift text-white">
-        <div className="container-tight py-24 md:py-32 text-center">
-          <p className="eyebrow justify-center text-accent-glow animate-fade-in-down">Partnership</p>
-          <h1 className="heading-xl mt-4 animate-fade-in" style={{ animationDelay: "150ms" }}>Partner With Us</h1>
-          <p className="mt-5 max-w-2xl mx-auto text-white/85 text-lg animate-fade-in" style={{ animationDelay: "300ms" }}>
-            We collaborate with schools, organizations, and institutions to deliver impactful
-            training programs for students, parents, and staff.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        badgeTag="Partner"
+        title={
+          <>
+            Partner <span className="text-accent-glow">With Us.</span>
+          </>
+        }
+        subtitle="We collaborate with schools, organizations, and institutions to deliver impactful training programs for students, parents, and staff."
+      />
 
-      <section className="section">
+      <section className="section overflow-hidden">
         <div className="container-tight grid lg:grid-cols-2 gap-14 items-start">
           <Reveal>
             <p className="eyebrow">Focus Areas</p>
-            <h2 className="heading-lg mt-3 text-primary">Where we create <span className="text-accent">impact together.</span></h2>
-            <div className="mt-10 grid sm:grid-cols-2 gap-5">
-              {[
-                { icon: GraduationCap, t: "Student Development", d: "Tailored programs that build academic and life skills." },
-                { icon: UserCheck, t: "Teacher Training", d: "Equipping educators with modern teaching strategies." },
-                { icon: Users, t: "Parenting Sessions", d: "Empowering parents to raise confident, grounded children." },
-                { icon: Award, t: "Leadership Workshops", d: "Cultivating leaders within your team or institution." },
-              ].map((f, i) => (
-                <Reveal key={f.t} delay={i * 100}>
-                  <div className="bg-card border border-border rounded-xl p-6 shadow-card hover:shadow-elegant transition-all hover:-translate-y-1 h-full">
-                    <div className="h-11 w-11 rounded-lg bg-gradient-accent text-accent-foreground grid place-items-center shadow-glow">
-                      <f.icon />
-                    </div>
-                    <p className="mt-4 font-bold text-primary">{f.t}</p>
-                    <p className="mt-1 text-sm text-muted-foreground">{f.d}</p>
-                  </div>
-                </Reveal>
-              ))}
-            </div>
+            <h2 className="heading-serif text-4xl md:text-5xl mt-3 text-primary">
+              Where we create <span className="text-accent">impact together.</span>
+            </h2>
+            <p className="mt-5 text-muted-foreground text-lg max-w-md">
+              From classrooms to boardrooms, we co-create programs that meet your people where they are.
+            </p>
             <div className="mt-10 relative rounded-2xl overflow-hidden shadow-elegant">
               <img src={partnership} alt="Partnership handshake" loading="lazy" className="w-full aspect-[16/10] object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent" />
@@ -65,6 +75,10 @@ const Partnership = () => {
                 <Building2 className="h-6 w-6 text-accent-glow" />
                 <p className="mt-2 font-bold text-lg">Trusted by institutions across 6+ countries.</p>
               </div>
+            </div>
+            <div className="mt-10 grid grid-cols-2 gap-5">
+              <VerticalMarquee duration={32} items={col1.map((f) => <FocusTile {...f} />)} />
+              <VerticalMarquee reverse duration={36} items={col2.map((f) => <FocusTile {...f} />)} />
             </div>
           </Reveal>
 
