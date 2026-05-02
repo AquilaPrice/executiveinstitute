@@ -1,13 +1,34 @@
 import { useState } from "react";
-import { GraduationCap, UserCheck, Users, Award, Send, Building2 } from "lucide-react";
+import { GraduationCap, UserCheck, Users, Award, Send, Building2, Handshake, Globe2 } from "lucide-react";
 import Layout from "@/components/Layout";
 import Reveal from "@/components/Reveal";
+import PageHero from "@/components/PageHero";
+import VerticalMarquee from "@/components/VerticalMarquee";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import partnership from "@/assets/partnership.jpg";
+
+const focusAreas = [
+  { icon: GraduationCap, t: "Student Development", d: "Tailored programs that build academic and life skills." },
+  { icon: UserCheck, t: "Teacher Training", d: "Equipping educators with modern teaching strategies." },
+  { icon: Users, t: "Parenting Sessions", d: "Empowering parents to raise confident, grounded children." },
+  { icon: Award, t: "Leadership Workshops", d: "Cultivating leaders within your team or institution." },
+  { icon: Handshake, t: "Corporate Programs", d: "Soft-skill and leadership training for staff teams." },
+  { icon: Globe2, t: "Community Outreach", d: "Joint impact projects across schools and communities." },
+];
+
+const FocusTile = ({ icon: Icon, t, d }: { icon: any; t: string; d: string }) => (
+  <article className="bg-card border border-border rounded-2xl p-6 shadow-card hover:shadow-elegant transition-all">
+    <div className="h-11 w-11 rounded-lg bg-gradient-accent text-accent-foreground grid place-items-center shadow-glow">
+      <Icon className="h-5 w-5" />
+    </div>
+    <p className="mt-4 font-bold text-primary">{t}</p>
+    <p className="mt-1 text-sm text-muted-foreground">{d}</p>
+  </article>
+);
 
 const Partnership = () => {
   const [submitting, setSubmitting] = useState(false);
@@ -22,18 +43,20 @@ const Partnership = () => {
     }, 700);
   };
 
+  const col1 = focusAreas.filter((_, i) => i % 2 === 0);
+  const col2 = focusAreas.filter((_, i) => i % 2 === 1);
+
   return (
     <Layout>
-      <section className="relative overflow-hidden bg-gradient-hero bg-[length:200%_200%] animate-gradient-shift text-white">
-        <div className="container-tight py-24 md:py-32 text-center">
-          <p className="eyebrow justify-center text-accent-glow animate-fade-in-down">Partnership</p>
-          <h1 className="heading-xl mt-4 animate-fade-in" style={{ animationDelay: "150ms" }}>Partner With Us</h1>
-          <p className="mt-5 max-w-2xl mx-auto text-white/85 text-lg animate-fade-in" style={{ animationDelay: "300ms" }}>
-            We collaborate with schools, organizations, and institutions to deliver impactful
-            training programs for students, parents, and staff.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        badgeTag="Partner"
+        title={
+          <>
+            Partner <span className="text-accent-glow">With Us.</span>
+          </>
+        }
+        subtitle="We collaborate with schools, organizations, and institutions to deliver impactful training programs for students, parents, and staff."
+      />
 
       <section className="section">
         <div className="container-tight grid lg:grid-cols-2 gap-14 items-start">
