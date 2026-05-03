@@ -33,12 +33,12 @@ const Navbar = () => {
       }`}
     >
       <nav className="container-tight flex items-center justify-between h-20">
-        <Link to="/" className="flex items-center gap-3 group">
-          <img src={logo} alt="The Executive Institute of Learning logo" className="h-12 w-auto rounded-md" />
-          <span className="hidden sm:flex flex-col leading-tight">
-            <span className="text-[10px] font-bold tracking-[0.18em] text-accent uppercase">The Executive Institute</span>
-            <span className="text-sm font-extrabold text-primary tracking-tight">of Learning</span>
-          </span>
+        <Link to="/" className="flex items-center group" aria-label="The Executive Institute of Learning">
+          <img
+            src={logo}
+            alt="The Executive Institute of Learning logo"
+            className="h-14 md:h-16 w-auto object-contain mix-blend-multiply contrast-125 saturate-150 drop-shadow-[0_2px_6px_rgba(0,0,0,0.25)]"
+          />
         </Link>
 
         <div className="hidden lg:flex items-center gap-8">

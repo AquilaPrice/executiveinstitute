@@ -7,12 +7,13 @@ const Footer = () => {
     <footer className="bg-primary text-primary-foreground">
       <div className="container-tight py-16 grid gap-12 md:grid-cols-4">
         <div className="md:col-span-2">
-          <div className="flex items-center gap-3 mb-5">
-            <img src={logo} alt="TEEIL logo" loading="lazy" className="h-12 w-auto rounded-md bg-white p-1" />
-            <div className="leading-tight">
-              <p className="text-[10px] font-bold tracking-[0.18em] text-accent uppercase">The Executive Institute</p>
-              <p className="text-sm font-bold">of Learning</p>
-            </div>
+          <div className="flex items-center mb-5">
+            <img
+              src={logo}
+              alt="TEEIL logo"
+              loading="lazy"
+              className="h-16 w-auto object-contain mix-blend-screen contrast-125 saturate-150"
+            />
           </div>
           <p className="text-primary-foreground/75 max-w-md">
             Raising minds and building lives through academic excellence, life principles,
