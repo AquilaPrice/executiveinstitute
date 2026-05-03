@@ -383,67 +383,58 @@ const Index = () => {
         </div>
       </section>
 
-      {/* PROGRAMS — vertical marquee preview */}
-      <section className="section bg-background overflow-hidden">
-        <div className="container-tight grid lg:grid-cols-2 gap-14 items-center">
-          <div className="grid grid-cols-2 gap-5 order-2 lg:order-1">
-            <VerticalMarquee
-              duration={36}
-              items={programs.map((p) => (
-                <Link to="/programs" className="block group">
-                  <article className="overflow-hidden rounded-2xl bg-card border border-border shadow-card hover:shadow-elegant transition-all">
-                    <div className="relative aspect-[4/3] overflow-hidden">
-                      <img src={p.img} alt={p.title} loading="lazy" className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-700" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent" />
-                      <span className="absolute top-3 left-3 bg-accent text-accent-foreground text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-full">{p.age}</span>
-                    </div>
-                    <div className="p-4">
-                      <h3 className="font-bold text-primary text-sm">{p.title}</h3>
-                    </div>
-                  </article>
-                </Link>
-              ))}
-            />
-            <VerticalMarquee
-              reverse
-              duration={40}
-              items={[...programs].reverse().map((p) => (
-                <article className="rounded-2xl bg-card border border-border shadow-card p-5">
-                  <div className="h-11 w-11 rounded-xl bg-primary/5 text-accent grid place-items-center">
-                    <p.icon className="h-5 w-5" />
-                  </div>
-                  <h3 className="mt-4 font-bold text-primary text-sm">{p.title}</h3>
-                  <p className="mt-1 text-xs text-muted-foreground">{p.desc}</p>
-                </article>
-              ))}
-            />
-          </div>
-          <Reveal className="order-1 lg:order-2">
+      {/* PROGRAMS — sticky stacking cards */}
+      <section className="bg-background overflow-clip">
+        <div className="container-tight pt-24 md:pt-32 pb-16">
+          <Reveal className="max-w-3xl">
             <p className="eyebrow">Program Overview</p>
-            <h2 className="heading-serif text-4xl md:text-5xl mt-4 text-primary">
+            <h2 className="heading-serif text-4xl md:text-6xl mt-4 text-primary">
               Our Programs
             </h2>
             <p className="mt-5 text-muted-foreground text-lg">
               Structured learning paths designed to develop skills, build character, and prepare
-              individuals for real-life success at every stage.
+              individuals for real-life success at every stage. Scroll to explore each track.
             </p>
-            <div className="mt-8 space-y-3">
-              {programs.map((p) => (
-                <Link key={p.title} to="/programs" className="flex items-center justify-between gap-4 p-4 rounded-xl bg-card border border-border hover:shadow-card transition-all group">
-                  <div className="flex items-center gap-3">
-                    <span className="h-9 w-9 rounded-lg bg-gradient-accent grid place-items-center text-accent-foreground">
-                      <p.icon className="h-4 w-4" />
-                    </span>
-                    <div>
-                      <p className="font-bold text-primary text-sm">{p.title}</p>
-                      <p className="text-xs text-muted-foreground">{p.age} Track</p>
-                    </div>
-                  </div>
-                  <ArrowRight className="h-4 w-4 text-accent group-hover:translate-x-1 transition-transform" />
-                </Link>
-              ))}
-            </div>
           </Reveal>
+        </div>
+        <div className="container-tight pb-32">
+          {programs.map((p, i) => (
+            <div
+              key={p.title}
+              className="sticky"
+              style={{ top: `${96 + i * 36}px` }}
+            >
+              <article
+                className="relative grid md:grid-cols-2 gap-0 rounded-3xl overflow-hidden border border-border shadow-elegant bg-card mb-10"
+                style={{ marginTop: i === 0 ? 0 : `-${i * 8}px` }}
+              >
+                <div className="relative aspect-[4/3] md:aspect-auto md:min-h-[420px] overflow-hidden">
+                  <img src={p.img} alt={p.title} loading="lazy" className="absolute inset-0 h-full w-full object-cover" />
+                  <div className="absolute inset-0 bg-gradient-to-tr from-primary/70 via-primary/20 to-transparent" />
+                  <span className="absolute top-5 left-5 bg-accent text-accent-foreground text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full">
+                    Track {i + 1} · {p.age}
+                  </span>
+                </div>
+                <div className="p-8 md:p-12 flex flex-col justify-center bg-card">
+                  <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-accent">
+                    <span className="h-px w-6 bg-accent" /> 0{i + 1}
+                  </div>
+                  <h3 className="heading-serif text-3xl md:text-4xl mt-4 text-primary">{p.title}</h3>
+                  <p className="mt-4 text-muted-foreground text-base leading-relaxed">{p.desc}</p>
+                  <div className="mt-8 flex flex-wrap gap-3">
+                    <Button asChild variant="hero">
+                      <Link to="/programs">View Program <ArrowRight /></Link>
+                    </Button>
+                    <Button asChild variant="outline">
+                      <a href={`mailto:teeiinstitute@gmail.com?subject=Application — ${encodeURIComponent(p.title)}&body=I would like to apply for the ${encodeURIComponent(p.title)}.`}>
+                        Apply Now
+                      </a>
+                    </Button>
+                  </div>
+                </div>
+              </article>
+            </div>
+          ))}
         </div>
       </section>
 
