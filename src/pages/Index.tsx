@@ -101,6 +101,11 @@ const testimonials = [
   { quote: "This program gave me clarity and confidence. I now lead with purpose.", author: "Adaeze O.", role: "Adult Program Graduate" },
   { quote: "My daughter is more confident in school and at home. Truly transformative.", author: "Mr. Mensah", role: "Parent" },
   { quote: "I discovered my strengths and a career path I'm genuinely excited about.", author: "Brian K.", role: "Teen Program Graduate" },
+  { quote: "The leadership training reshaped how I lead my team at work.", author: "Lerato M.", role: "Adult Program Graduate" },
+  { quote: "Our school partnership with TEEIL changed our students' outlook.", author: "Mrs. Okafor", role: "School Principal" },
+  { quote: "I finally understand my purpose. The mentors made all the difference.", author: "Daniel T.", role: "Adult Program Graduate" },
+  { quote: "My son's discipline and study habits have completely improved.", author: "Mrs. Achieng", role: "Parent" },
+  { quote: "From shy teen to confident speaker — I owe so much to this institute.", author: "Chiamaka E.", role: "Teen Program Graduate" },
 ];
 
 /* ---------- Vertical marquee card ---------- */
