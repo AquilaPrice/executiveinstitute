@@ -62,23 +62,45 @@ const About = () => {
         </div>
       </section>
 
-      <section className="section bg-gradient-soft">
-        <div className="container-tight grid md:grid-cols-3 gap-6">
-          {[
-            { icon: Target, title: "Mission", text: "To equip individuals with knowledge, skills, and principles for meaningful living." },
-            { icon: Eye, title: "Vision", text: "To raise a generation of intellectually sound and morally grounded leaders." },
-            { icon: Compass, title: "Our Approach", text: "We combine academic training, life principles, and leadership development for total transformation." },
-          ].map((c, i) => (
-            <Reveal key={c.title} delay={i * 100}>
-              <div className="h-full bg-card border border-border rounded-2xl p-8 shadow-card hover:shadow-elegant transition-all hover:-translate-y-1">
-                <div className="h-14 w-14 rounded-2xl bg-gradient-accent grid place-items-center text-accent-foreground shadow-glow">
-                  <c.icon />
-                </div>
-                <h3 className="mt-5 font-bold text-xl text-primary">{c.title}</h3>
-                <p className="mt-3 text-muted-foreground leading-relaxed">{c.text}</p>
+      <section className="py-24 md:py-32" style={{ backgroundColor: "#f5f0eb" }}>
+        <div className="container-tight">
+          <Reveal>
+            <p className="text-xs font-bold uppercase tracking-[0.25em]" style={{ color: "#262626" }}>
+              Our Foundation
+            </p>
+            <h2
+              className="heading-serif mt-6 text-balance"
+              style={{
+                fontSize: "clamp(3rem, 9vw, 8rem)",
+                lineHeight: 0.95,
+                color: "#262626",
+                letterSpacing: "-0.03em",
+              }}
+            >
+              Mission, Vision & Approach.
+            </h2>
+          </Reveal>
+
+          <div
+            className="mv-grid mt-16 border-t border-l"
+            style={{ borderColor: "rgba(38,38,38,0.12)" }}
+          >
+            {[
+              { icon: Target, title: "Mission", text: "To equip individuals with knowledge, skills, and principles for meaningful living." },
+              { icon: Eye, title: "Vision", text: "To raise a generation of intellectually sound and morally grounded leaders." },
+              { icon: Compass, title: "Our Approach", text: "We combine academic training, life principles, and leadership development for total transformation." },
+            ].map((c) => (
+              <div key={c.title} className="mv-card group">
+                <c.icon className="mv-icon" strokeWidth={1.5} size={40} />
+                <h3 className="mt-8 font-extrabold uppercase tracking-wider text-base">
+                  {c.title}
+                </h3>
+                <p className="mt-4 text-sm leading-relaxed opacity-90">
+                  {c.text}
+                </p>
               </div>
-            </Reveal>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
 

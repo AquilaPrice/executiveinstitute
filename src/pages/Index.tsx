@@ -28,6 +28,9 @@ import about from "@/assets/about.jpg";
 import children from "@/assets/children.jpg";
 import teens from "@/assets/teens.jpg";
 import adults from "@/assets/adults.jpg";
+import { posts as blogPosts } from "./Blog";
+
+const blogPreview = blogPosts.slice(0, 3);
 
 const offerings = [
   { icon: BookOpen, title: "Academic Tutoring", desc: "Strong foundations in core subjects with personalized support." },
@@ -101,6 +104,11 @@ const testimonials = [
   { quote: "This program gave me clarity and confidence. I now lead with purpose.", author: "Adaeze O.", role: "Adult Program Graduate" },
   { quote: "My daughter is more confident in school and at home. Truly transformative.", author: "Mr. Mensah", role: "Parent" },
   { quote: "I discovered my strengths and a career path I'm genuinely excited about.", author: "Brian K.", role: "Teen Program Graduate" },
+  { quote: "The leadership training reshaped how I lead my team at work.", author: "Lerato M.", role: "Adult Program Graduate" },
+  { quote: "Our school partnership with TEEIL changed our students' outlook.", author: "Mrs. Okafor", role: "School Principal" },
+  { quote: "I finally understand my purpose. The mentors made all the difference.", author: "Daniel T.", role: "Adult Program Graduate" },
+  { quote: "My son's discipline and study habits have completely improved.", author: "Mrs. Achieng", role: "Parent" },
+  { quote: "From shy teen to confident speaker — I owe so much to this institute.", author: "Chiamaka E.", role: "Teen Program Graduate" },
 ];
 
 /* ---------- Vertical marquee card ---------- */
@@ -383,67 +391,58 @@ const Index = () => {
         </div>
       </section>
 
-      {/* PROGRAMS — vertical marquee preview */}
-      <section className="section bg-background overflow-hidden">
-        <div className="container-tight grid lg:grid-cols-2 gap-14 items-center">
-          <div className="grid grid-cols-2 gap-5 order-2 lg:order-1">
-            <VerticalMarquee
-              duration={36}
-              items={programs.map((p) => (
-                <Link to="/programs" className="block group">
-                  <article className="overflow-hidden rounded-2xl bg-card border border-border shadow-card hover:shadow-elegant transition-all">
-                    <div className="relative aspect-[4/3] overflow-hidden">
-                      <img src={p.img} alt={p.title} loading="lazy" className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-700" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent" />
-                      <span className="absolute top-3 left-3 bg-accent text-accent-foreground text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-full">{p.age}</span>
-                    </div>
-                    <div className="p-4">
-                      <h3 className="font-bold text-primary text-sm">{p.title}</h3>
-                    </div>
-                  </article>
-                </Link>
-              ))}
-            />
-            <VerticalMarquee
-              reverse
-              duration={40}
-              items={[...programs].reverse().map((p) => (
-                <article className="rounded-2xl bg-card border border-border shadow-card p-5">
-                  <div className="h-11 w-11 rounded-xl bg-primary/5 text-accent grid place-items-center">
-                    <p.icon className="h-5 w-5" />
-                  </div>
-                  <h3 className="mt-4 font-bold text-primary text-sm">{p.title}</h3>
-                  <p className="mt-1 text-xs text-muted-foreground">{p.desc}</p>
-                </article>
-              ))}
-            />
-          </div>
-          <Reveal className="order-1 lg:order-2">
+      {/* PROGRAMS — sticky stacking cards */}
+      <section className="bg-background overflow-clip">
+        <div className="container-tight pt-24 md:pt-32 pb-16">
+          <Reveal className="max-w-3xl">
             <p className="eyebrow">Program Overview</p>
-            <h2 className="heading-serif text-4xl md:text-5xl mt-4 text-primary">
+            <h2 className="heading-serif text-4xl md:text-6xl mt-4 text-primary">
               Our Programs
             </h2>
             <p className="mt-5 text-muted-foreground text-lg">
               Structured learning paths designed to develop skills, build character, and prepare
-              individuals for real-life success at every stage.
+              individuals for real-life success at every stage. Scroll to explore each track.
             </p>
-            <div className="mt-8 space-y-3">
-              {programs.map((p) => (
-                <Link key={p.title} to="/programs" className="flex items-center justify-between gap-4 p-4 rounded-xl bg-card border border-border hover:shadow-card transition-all group">
-                  <div className="flex items-center gap-3">
-                    <span className="h-9 w-9 rounded-lg bg-gradient-accent grid place-items-center text-accent-foreground">
-                      <p.icon className="h-4 w-4" />
-                    </span>
-                    <div>
-                      <p className="font-bold text-primary text-sm">{p.title}</p>
-                      <p className="text-xs text-muted-foreground">{p.age} Track</p>
-                    </div>
-                  </div>
-                  <ArrowRight className="h-4 w-4 text-accent group-hover:translate-x-1 transition-transform" />
-                </Link>
-              ))}
-            </div>
           </Reveal>
+        </div>
+        <div className="container-tight pb-32">
+          {programs.map((p, i) => (
+            <div
+              key={p.title}
+              className="sticky"
+              style={{ top: `${96 + i * 36}px` }}
+            >
+              <article
+                className="relative grid md:grid-cols-2 gap-0 rounded-3xl overflow-hidden border border-border shadow-elegant bg-card mb-10"
+                style={{ marginTop: i === 0 ? 0 : `-${i * 8}px` }}
+              >
+                <div className="relative aspect-[4/3] md:aspect-auto md:min-h-[420px] overflow-hidden">
+                  <img src={p.img} alt={p.title} loading="lazy" className="absolute inset-0 h-full w-full object-cover" />
+                  <div className="absolute inset-0 bg-gradient-to-tr from-primary/70 via-primary/20 to-transparent" />
+                  <span className="absolute top-5 left-5 bg-accent text-accent-foreground text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full">
+                    Track {i + 1} · {p.age}
+                  </span>
+                </div>
+                <div className="p-8 md:p-12 flex flex-col justify-center bg-card">
+                  <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-accent">
+                    <span className="h-px w-6 bg-accent" /> 0{i + 1}
+                  </div>
+                  <h3 className="heading-serif text-3xl md:text-4xl mt-4 text-primary">{p.title}</h3>
+                  <p className="mt-4 text-muted-foreground text-base leading-relaxed">{p.desc}</p>
+                  <div className="mt-8 flex flex-wrap gap-3">
+                    <Button asChild variant="hero">
+                      <Link to="/programs">View Program <ArrowRight /></Link>
+                    </Button>
+                    <Button asChild variant="outline">
+                      <a href={`mailto:teeiinstitute@gmail.com?subject=Application — ${encodeURIComponent(p.title)}&body=I would like to apply for the ${encodeURIComponent(p.title)}.`}>
+                        Apply Now
+                      </a>
+                    </Button>
+                  </div>
+                </div>
+              </article>
+            </div>
+          ))}
         </div>
       </section>
 
@@ -470,24 +469,91 @@ const Index = () => {
         </div>
       </section>
 
-      {/* TESTIMONIALS */}
-      <section className="section bg-background">
-        <div className="container-tight">
-          <Reveal className="text-center max-w-2xl mx-auto">
-            <p className="eyebrow justify-center">Testimonials</p>
-            <h2 className="heading-serif text-4xl md:text-5xl mt-4 text-primary">What People Say</h2>
+      {/* TESTIMONIALS — vertical marquee */}
+      <section className="section bg-background overflow-hidden">
+        <div className="container-tight grid lg:grid-cols-2 gap-14 items-center">
+          <Reveal>
+            <p className="eyebrow">Testimonials</p>
+            <h2 className="heading-serif text-4xl md:text-5xl mt-4 text-primary">
+              What People <span className="text-accent">Say</span>
+            </h2>
+            <p className="mt-5 text-muted-foreground text-lg max-w-md">
+              Real stories from learners, parents and partners across Africa whose lives have been
+              shaped through our programs.
+            </p>
+            <Button asChild variant="hero" size="lg" className="mt-8">
+              <Link to="/contact">Share Your Story <ArrowRight /></Link>
+            </Button>
           </Reveal>
-          <div className="mt-14 grid md:grid-cols-3 gap-6">
-            {testimonials.map((t, i) => (
-              <Reveal key={t.author} delay={i * 120}>
-                <figure className="bg-card border border-border rounded-2xl p-8 shadow-card h-full hover:shadow-elegant transition-shadow">
-                  <Quote className="text-accent h-8 w-8" />
-                  <blockquote className="mt-4 text-lg text-foreground leading-relaxed">"{t.quote}"</blockquote>
-                  <figcaption className="mt-6 pt-5 border-t border-border">
-                    <p className="font-bold text-primary">{t.author}</p>
-                    <p className="text-xs text-muted-foreground uppercase tracking-wider">{t.role}</p>
+          <div className="grid grid-cols-2 gap-5">
+            <VerticalMarquee
+              duration={42}
+              items={testimonials.filter((_, i) => i % 2 === 0).map((t) => (
+                <figure className="bg-card border border-border rounded-2xl p-6 shadow-card">
+                  <Quote className="text-accent h-6 w-6" />
+                  <blockquote className="mt-3 text-sm text-foreground leading-relaxed">"{t.quote}"</blockquote>
+                  <figcaption className="mt-4 pt-4 border-t border-border">
+                    <p className="font-bold text-primary text-sm">{t.author}</p>
+                    <p className="text-[10px] text-muted-foreground uppercase tracking-wider">{t.role}</p>
                   </figcaption>
                 </figure>
+              ))}
+            />
+            <VerticalMarquee
+              reverse
+              duration={48}
+              items={testimonials.filter((_, i) => i % 2 === 1).map((t) => (
+                <figure className="bg-card border border-border rounded-2xl p-6 shadow-card">
+                  <Quote className="text-accent h-6 w-6" />
+                  <blockquote className="mt-3 text-sm text-foreground leading-relaxed">"{t.quote}"</blockquote>
+                  <figcaption className="mt-4 pt-4 border-t border-border">
+                    <p className="font-bold text-primary text-sm">{t.author}</p>
+                    <p className="text-[10px] text-muted-foreground uppercase tracking-wider">{t.role}</p>
+                  </figcaption>
+                </figure>
+              ))}
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* BLOG */}
+      <section className="section bg-gradient-soft">
+        <div className="container-tight">
+          <Reveal className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14">
+            <div className="max-w-2xl">
+              <p className="eyebrow">From The Blog</p>
+              <h2 className="heading-serif text-4xl md:text-5xl mt-4 text-primary">
+                Insights & <span className="text-accent">Stories</span>
+              </h2>
+              <p className="mt-4 text-muted-foreground text-lg">
+                Ideas on raising minds, building character, and shaping the next generation of leaders.
+              </p>
+            </div>
+            <Button asChild variant="outline" size="lg">
+              <Link to="/blog">Visit the Blog <ArrowRight /></Link>
+            </Button>
+          </Reveal>
+          <div className="grid md:grid-cols-3 gap-6">
+            {blogPreview.map((b, i) => (
+              <Reveal key={b.slug} delay={i * 100}>
+                <Link
+                  to={`/blog/${b.slug}`}
+                  className="group block bg-card border border-border rounded-2xl overflow-hidden shadow-card hover:shadow-elegant transition-all hover:-translate-y-1 h-full"
+                >
+                  <div className="relative aspect-[16/10] overflow-hidden">
+                    <img src={b.image} alt={b.title} loading="lazy" className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                    <span className="absolute top-3 left-3 bg-accent text-accent-foreground text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-full">{b.category}</span>
+                  </div>
+                  <div className="p-6">
+                    <p className="text-xs text-muted-foreground">{b.date}</p>
+                    <h3 className="heading-serif text-xl text-primary mt-2 group-hover:text-accent transition-colors">{b.title}</h3>
+                    <p className="mt-3 text-sm text-muted-foreground leading-relaxed">{b.excerpt}</p>
+                    <span className="mt-4 inline-flex items-center gap-2 text-accent font-semibold text-sm">
+                      Read more <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                    </span>
+                  </div>
+                </Link>
               </Reveal>
             ))}
           </div>
