@@ -466,24 +466,91 @@ const Index = () => {
         </div>
       </section>
 
-      {/* TESTIMONIALS */}
-      <section className="section bg-background">
-        <div className="container-tight">
-          <Reveal className="text-center max-w-2xl mx-auto">
-            <p className="eyebrow justify-center">Testimonials</p>
-            <h2 className="heading-serif text-4xl md:text-5xl mt-4 text-primary">What People Say</h2>
+      {/* TESTIMONIALS — vertical marquee */}
+      <section className="section bg-background overflow-hidden">
+        <div className="container-tight grid lg:grid-cols-2 gap-14 items-center">
+          <Reveal>
+            <p className="eyebrow">Testimonials</p>
+            <h2 className="heading-serif text-4xl md:text-5xl mt-4 text-primary">
+              What People <span className="text-accent">Say</span>
+            </h2>
+            <p className="mt-5 text-muted-foreground text-lg max-w-md">
+              Real stories from learners, parents and partners across Africa whose lives have been
+              shaped through our programs.
+            </p>
+            <Button asChild variant="hero" size="lg" className="mt-8">
+              <Link to="/contact">Share Your Story <ArrowRight /></Link>
+            </Button>
           </Reveal>
-          <div className="mt-14 grid md:grid-cols-3 gap-6">
-            {testimonials.map((t, i) => (
-              <Reveal key={t.author} delay={i * 120}>
-                <figure className="bg-card border border-border rounded-2xl p-8 shadow-card h-full hover:shadow-elegant transition-shadow">
-                  <Quote className="text-accent h-8 w-8" />
-                  <blockquote className="mt-4 text-lg text-foreground leading-relaxed">"{t.quote}"</blockquote>
-                  <figcaption className="mt-6 pt-5 border-t border-border">
-                    <p className="font-bold text-primary">{t.author}</p>
-                    <p className="text-xs text-muted-foreground uppercase tracking-wider">{t.role}</p>
+          <div className="grid grid-cols-2 gap-5">
+            <VerticalMarquee
+              duration={42}
+              items={testimonials.filter((_, i) => i % 2 === 0).map((t) => (
+                <figure className="bg-card border border-border rounded-2xl p-6 shadow-card">
+                  <Quote className="text-accent h-6 w-6" />
+                  <blockquote className="mt-3 text-sm text-foreground leading-relaxed">"{t.quote}"</blockquote>
+                  <figcaption className="mt-4 pt-4 border-t border-border">
+                    <p className="font-bold text-primary text-sm">{t.author}</p>
+                    <p className="text-[10px] text-muted-foreground uppercase tracking-wider">{t.role}</p>
                   </figcaption>
                 </figure>
+              ))}
+            />
+            <VerticalMarquee
+              reverse
+              duration={48}
+              items={testimonials.filter((_, i) => i % 2 === 1).map((t) => (
+                <figure className="bg-card border border-border rounded-2xl p-6 shadow-card">
+                  <Quote className="text-accent h-6 w-6" />
+                  <blockquote className="mt-3 text-sm text-foreground leading-relaxed">"{t.quote}"</blockquote>
+                  <figcaption className="mt-4 pt-4 border-t border-border">
+                    <p className="font-bold text-primary text-sm">{t.author}</p>
+                    <p className="text-[10px] text-muted-foreground uppercase tracking-wider">{t.role}</p>
+                  </figcaption>
+                </figure>
+              ))}
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* BLOG */}
+      <section className="section bg-gradient-soft">
+        <div className="container-tight">
+          <Reveal className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14">
+            <div className="max-w-2xl">
+              <p className="eyebrow">From The Blog</p>
+              <h2 className="heading-serif text-4xl md:text-5xl mt-4 text-primary">
+                Insights & <span className="text-accent">Stories</span>
+              </h2>
+              <p className="mt-4 text-muted-foreground text-lg">
+                Ideas on raising minds, building character, and shaping the next generation of leaders.
+              </p>
+            </div>
+            <Button asChild variant="outline" size="lg">
+              <Link to="/blog">Visit the Blog <ArrowRight /></Link>
+            </Button>
+          </Reveal>
+          <div className="grid md:grid-cols-3 gap-6">
+            {blogPreview.map((b, i) => (
+              <Reveal key={b.slug} delay={i * 100}>
+                <Link
+                  to={`/blog/${b.slug}`}
+                  className="group block bg-card border border-border rounded-2xl overflow-hidden shadow-card hover:shadow-elegant transition-all hover:-translate-y-1 h-full"
+                >
+                  <div className="relative aspect-[16/10] overflow-hidden">
+                    <img src={b.image} alt={b.title} loading="lazy" className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                    <span className="absolute top-3 left-3 bg-accent text-accent-foreground text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-full">{b.category}</span>
+                  </div>
+                  <div className="p-6">
+                    <p className="text-xs text-muted-foreground">{b.date}</p>
+                    <h3 className="heading-serif text-xl text-primary mt-2 group-hover:text-accent transition-colors">{b.title}</h3>
+                    <p className="mt-3 text-sm text-muted-foreground leading-relaxed">{b.excerpt}</p>
+                    <span className="mt-4 inline-flex items-center gap-2 text-accent font-semibold text-sm">
+                      Read more <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                    </span>
+                  </div>
+                </Link>
               </Reveal>
             ))}
           </div>
