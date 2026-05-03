@@ -189,3 +189,53 @@
   mask-image: linear-gradient(to bottom, transparent, black 12%, black 88%, transparent);
   -webkit-mask-image: linear-gradient(to bottom, transparent, black 12%, black 88%, transparent);
 }
+
+/* Cursor follow effect */
+.cursor-glow-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 9999px;
+  background: hsl(var(--accent));
+  box-shadow: 0 0 14px hsl(var(--accent) / 0.85);
+  mix-blend-mode: difference;
+}
+.cursor-glow-blob {
+  width: 380px;
+  height: 380px;
+  border-radius: 9999px;
+  background: radial-gradient(
+    circle at center,
+    hsl(var(--accent) / 0.18) 0%,
+    hsl(var(--primary-glow) / 0.12) 40%,
+    transparent 70%
+  );
+  filter: blur(8px);
+}
+@media (hover: none) {
+  .cursor-glow-dot, .cursor-glow-blob { display: none !important; }
+}
+
+/* About — Mission/Vision grid (cream) */
+.mv-grid { display: grid; grid-template-columns: 1fr; }
+@media (min-width: 768px) { .mv-grid { grid-template-columns: repeat(3, 1fr); } }
+.mv-card {
+  padding: 40px;
+  background: #fdf8f3;
+  border-right: 1px solid rgba(38, 38, 38, 0.12);
+  border-bottom: 1px solid rgba(38, 38, 38, 0.12);
+  transition: background-color 0.4s ease, color 0.4s ease;
+  color: #262626;
+}
+.mv-card:last-child { border-right: none; }
+.mv-card .mv-icon {
+  font-size: 2.25rem; /* 4xl */
+  line-height: 1;
+  color: #e4a4bd;
+  transition: color 0.4s ease, transform 0.4s ease;
+}
+.mv-card:hover { background: #e4a4bd; }
+.mv-card:hover .mv-icon { color: #262626; transform: scale(1.05); }
+@media (max-width: 767px) {
+  .mv-card { border-right: none; }
+}
+
