@@ -452,6 +452,11 @@ const Index = () => {
       {/* FEATURED MESSAGE */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-hero bg-[length:200%_200%] animate-gradient-shift" />
+        <div className="absolute inset-0 opacity-[0.07]" style={{
+          backgroundImage:
+            "radial-gradient(circle at 1px 1px, white 1px, transparent 0)",
+          backgroundSize: "32px 32px",
+        }} />
         <div className="relative container-tight py-24 md:py-32 text-center text-white">
           <Reveal>
             <p className="eyebrow justify-center text-accent-glow">A Message For You</p>
@@ -462,9 +467,17 @@ const Index = () => {
               Join our transformational programs designed to help you grow, lead, and succeed
               in every area of your life.
             </p>
-            <Button asChild variant="hero" size="xl" className="mt-10 animate-pulse-glow">
-              <Link to="/contact">Register Now <ArrowRight /></Link>
-            </Button>
+            <div className="mt-10 flex flex-wrap gap-4 justify-center">
+              <Button asChild variant="hero" size="xl" className="animate-pulse-glow">
+                <Link to="/contact">Register Now <ArrowRight /></Link>
+              </Button>
+              <Button asChild variant="outlineLight" size="xl">
+                <Link to="/programs">Explore Programs</Link>
+              </Button>
+            </div>
+            <p className="mt-6 text-xs uppercase tracking-[0.25em] text-white/60">
+              Trusted across 6+ African countries · 10+ years of impact
+            </p>
           </Reveal>
         </div>
       </section>
