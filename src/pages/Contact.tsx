@@ -9,17 +9,39 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 
+const EMAIL = "teeiinstitute@gmail.com";
+
 const Contact = () => {
   const [submitting, setSubmitting] = useState(false);
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSubmitting(true);
+    const form = e.target as HTMLFormElement;
+    const data = new FormData(form);
+    const name = String(data.get("name") || "");
+    const email = String(data.get("email") || "");
+    const phone = String(data.get("phone") || "");
+    const subject = String(data.get("subject") || "Website Enquiry");
+    const message = String(data.get("message") || "");
+
+    const body = [
+      `Name: ${name}`,
+      `Email: ${email}`,
+      `Phone: ${phone}`,
+      ``,
+      `Message:`,
+      message,
+    ].join("\n");
+
+    window.location.href = `mailto:${EMAIL}?subject=${encodeURIComponent(
+      subject
+    )}&body=${encodeURIComponent(body)}`;
+
     setTimeout(() => {
       setSubmitting(false);
-      toast.success("Message sent! We'll be in touch soon.");
-      (e.target as HTMLFormElement).reset();
-    }, 700);
+      toast.success("Opening your email app to send the message...");
+    }, 400);
   };
 
   const locations = ["Nigeria (HQ)", "Botswana", "Ghana", "South Africa", "Uganda", "Kenya"];
