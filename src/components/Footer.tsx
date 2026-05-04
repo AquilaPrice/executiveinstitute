@@ -12,7 +12,7 @@ const Footer = () => {
               src={logo}
               alt="TEEIL logo"
               loading="lazy"
-              className="h-16 w-auto object-contain mix-blend-screen contrast-125 saturate-150"
+              className="h-16 w-auto object-contain bg-white rounded-lg p-1.5"
             />
           </div>
           <p className="text-primary-foreground/75 max-w-md">
