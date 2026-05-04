@@ -126,6 +126,17 @@
     display: flex;
     animation: marquee 30s linear infinite;
   }
+  .marquee-h-mask {
+    mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  }
+  .marquee-h {
+    display: flex;
+    width: max-content;
+    animation: marquee 50s linear infinite;
+  }
+  .marquee-h.reverse { animation-direction: reverse; }
+  .marquee-h:hover { animation-play-state: paused; }
 
   .heading-serif {
     font-family: 'Playfair Display', Georgia, serif;
