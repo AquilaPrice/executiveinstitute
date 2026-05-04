@@ -142,8 +142,11 @@ const Partnership = () => {
                   <Textarea id="message" name="message" required rows={5} className="mt-1.5" placeholder="Briefly describe what you have in mind..." />
                 </div>
                 <Button type="submit" variant="hero" size="lg" disabled={submitting}>
-                  {submitting ? "Sending..." : <>Submit Request <Send /></>}
+                  {submitting ? "Opening email..." : <>Submit Request <Send /></>}
                 </Button>
+                <p className="text-xs text-muted-foreground text-center">
+                  Your request will be sent to {EMAIL}
+                </p>
               </div>
             </form>
           </Reveal>
