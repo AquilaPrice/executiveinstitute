@@ -69,13 +69,8 @@ const About = () => {
               Our Foundation
             </p>
             <h2
-              className="heading-serif mt-6 text-balance"
-              style={{
-                fontSize: "clamp(3rem, 9vw, 8rem)",
-                lineHeight: 0.95,
-                color: "#262626",
-                letterSpacing: "-0.03em",
-              }}
+              className="heading-serif text-4xl md:text-5xl mt-6 text-balance"
+              style={{ color: "#262626" }}
             >
               Mission, Vision & Approach.
             </h2>
