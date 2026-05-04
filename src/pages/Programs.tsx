@@ -273,9 +273,6 @@ const ProgramCard = ({ p }: { p: Program }) => {
               >
                 <Mail className="h-4 w-4" /> Send Application
               </a>
-              <p className="text-[11px] text-muted-foreground text-center">
-                Opens your email app to send to {EMAIL}
-              </p>
             </div>
           )}
         </div>
