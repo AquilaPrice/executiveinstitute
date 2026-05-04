@@ -30,17 +30,43 @@ const FocusTile = ({ icon: Icon, t, d }: { icon: any; t: string; d: string }) =>
   </article>
 );
 
+const EMAIL = "teeiinstitute@gmail.com";
+
 const Partnership = () => {
   const [submitting, setSubmitting] = useState(false);
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSubmitting(true);
+    const data = new FormData(e.target as HTMLFormElement);
+    const org = String(data.get("org") || "");
+    const name = String(data.get("name") || "");
+    const role = String(data.get("role") || "");
+    const email = String(data.get("email") || "");
+    const phone = String(data.get("phone") || "");
+    const message = String(data.get("message") || "");
+
+    const body = [
+      `Partnership request from ${org}`,
+      ``,
+      `Organization: ${org}`,
+      `Contact Name: ${name}`,
+      `Role: ${role}`,
+      `Email: ${email}`,
+      `Phone: ${phone}`,
+      ``,
+      `How they want to partner:`,
+      message,
+    ].join("\n");
+
+    window.location.href = `mailto:${EMAIL}?subject=${encodeURIComponent(
+      `Partnership Request — ${org}`
+    )}&body=${encodeURIComponent(body)}`;
+
     setTimeout(() => {
       setSubmitting(false);
-      toast.success("Request received! We'll reach out within 48 hours.");
-      (e.target as HTMLFormElement).reset();
-    }, 700);
+      toast.success("Opening your email app to send the request...");
+    }, 400);
   };
 
   const col1 = focusAreas.filter((_, i) => i % 2 === 0);
@@ -116,8 +142,11 @@ const Partnership = () => {
                   <Textarea id="message" name="message" required rows={5} className="mt-1.5" placeholder="Briefly describe what you have in mind..." />
                 </div>
                 <Button type="submit" variant="hero" size="lg" disabled={submitting}>
-                  {submitting ? "Sending..." : <>Submit Request <Send /></>}
+                  {submitting ? "Opening email..." : <>Submit Request <Send /></>}
                 </Button>
+                <p className="text-xs text-muted-foreground text-center">
+                  Your request will be sent to {EMAIL}
+                </p>
               </div>
             </form>
           </Reveal>

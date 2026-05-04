@@ -452,6 +452,11 @@ const Index = () => {
       {/* FEATURED MESSAGE */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-hero bg-[length:200%_200%] animate-gradient-shift" />
+        <div className="absolute inset-0 opacity-[0.07]" style={{
+          backgroundImage:
+            "radial-gradient(circle at 1px 1px, white 1px, transparent 0)",
+          backgroundSize: "32px 32px",
+        }} />
         <div className="relative container-tight py-24 md:py-32 text-center text-white">
           <Reveal>
             <p className="eyebrow justify-center text-accent-glow">A Message For You</p>
@@ -462,58 +467,56 @@ const Index = () => {
               Join our transformational programs designed to help you grow, lead, and succeed
               in every area of your life.
             </p>
-            <Button asChild variant="hero" size="xl" className="mt-10 animate-pulse-glow">
-              <Link to="/contact">Register Now <ArrowRight /></Link>
-            </Button>
+            <div className="mt-10 flex flex-wrap gap-4 justify-center">
+              <Button asChild variant="hero" size="xl" className="animate-pulse-glow">
+                <Link to="/contact">Register Now <ArrowRight /></Link>
+              </Button>
+              <Button asChild variant="outlineLight" size="xl">
+                <Link to="/programs">Explore Programs</Link>
+              </Button>
+            </div>
+            <p className="mt-6 text-xs uppercase tracking-[0.25em] text-white/60">
+              Trusted across 6+ African countries · 10+ years of impact
+            </p>
           </Reveal>
         </div>
       </section>
 
-      {/* TESTIMONIALS — vertical marquee */}
+      {/* TESTIMONIALS — horizontal marquee */}
       <section className="section bg-background overflow-hidden">
-        <div className="container-tight grid lg:grid-cols-2 gap-14 items-center">
-          <Reveal>
+        <div className="container-tight">
+          <Reveal className="max-w-3xl mb-14">
             <p className="eyebrow">Testimonials</p>
             <h2 className="heading-serif text-4xl md:text-5xl mt-4 text-primary">
               What People <span className="text-accent">Say</span>
             </h2>
-            <p className="mt-5 text-muted-foreground text-lg max-w-md">
+            <p className="mt-5 text-muted-foreground text-lg">
               Real stories from learners, parents and partners across Africa whose lives have been
               shaped through our programs.
             </p>
-            <Button asChild variant="hero" size="lg" className="mt-8">
-              <Link to="/contact">Share Your Story <ArrowRight /></Link>
-            </Button>
           </Reveal>
-          <div className="grid grid-cols-2 gap-5">
-            <VerticalMarquee
-              duration={42}
-              items={testimonials.filter((_, i) => i % 2 === 0).map((t) => (
-                <figure className="bg-card border border-border rounded-2xl p-6 shadow-card">
-                  <Quote className="text-accent h-6 w-6" />
-                  <blockquote className="mt-3 text-sm text-foreground leading-relaxed">"{t.quote}"</blockquote>
-                  <figcaption className="mt-4 pt-4 border-t border-border">
-                    <p className="font-bold text-primary text-sm">{t.author}</p>
-                    <p className="text-[10px] text-muted-foreground uppercase tracking-wider">{t.role}</p>
-                  </figcaption>
-                </figure>
-              ))}
-            />
-            <VerticalMarquee
-              reverse
-              duration={48}
-              items={testimonials.filter((_, i) => i % 2 === 1).map((t) => (
-                <figure className="bg-card border border-border rounded-2xl p-6 shadow-card">
-                  <Quote className="text-accent h-6 w-6" />
-                  <blockquote className="mt-3 text-sm text-foreground leading-relaxed">"{t.quote}"</blockquote>
-                  <figcaption className="mt-4 pt-4 border-t border-border">
-                    <p className="font-bold text-primary text-sm">{t.author}</p>
-                    <p className="text-[10px] text-muted-foreground uppercase tracking-wider">{t.role}</p>
-                  </figcaption>
-                </figure>
-              ))}
-            />
+        </div>
+        <div className="marquee-h-mask">
+          <div className="marquee-h gap-6 px-3">
+            {[...testimonials, ...testimonials].map((t, i) => (
+              <figure
+                key={i}
+                className="w-[340px] shrink-0 bg-card border border-border rounded-2xl p-6 shadow-card"
+              >
+                <Quote className="text-accent h-6 w-6" />
+                <blockquote className="mt-3 text-sm text-foreground leading-relaxed">"{t.quote}"</blockquote>
+                <figcaption className="mt-4 pt-4 border-t border-border">
+                  <p className="font-bold text-primary text-sm">{t.author}</p>
+                  <p className="text-[10px] text-muted-foreground uppercase tracking-wider">{t.role}</p>
+                </figcaption>
+              </figure>
+            ))}
           </div>
+        </div>
+        <div className="container-tight mt-10 flex justify-center">
+          <Button asChild variant="hero" size="lg">
+            <Link to="/contact">Share Your Story <ArrowRight /></Link>
+          </Button>
         </div>
       </section>
 

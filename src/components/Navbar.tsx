@@ -29,8 +29,8 @@ const Navbar = () => {
 
   return (
     <header
-      className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
-        scrolled ? "bg-background/85 backdrop-blur-lg shadow-card" : "bg-background/0"
+      className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 bg-background ${
+        scrolled ? "shadow-card" : "border-b border-border/40"
       }`}
     >
       <nav className="container-tight flex items-center justify-between h-20">
@@ -38,7 +38,7 @@ const Navbar = () => {
           <img
             src={logo}
             alt="The Executive Institute of Learning logo"
-            className="h-14 md:h-16 w-auto object-contain mix-blend-multiply contrast-125 saturate-150 drop-shadow-[0_2px_6px_rgba(0,0,0,0.25)]"
+            className="h-14 md:h-16 w-auto object-contain"
           />
         </Link>
 

@@ -9,17 +9,39 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 
+const EMAIL = "teeiinstitute@gmail.com";
+
 const Contact = () => {
   const [submitting, setSubmitting] = useState(false);
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSubmitting(true);
+    const form = e.target as HTMLFormElement;
+    const data = new FormData(form);
+    const name = String(data.get("name") || "");
+    const email = String(data.get("email") || "");
+    const phone = String(data.get("phone") || "");
+    const subject = String(data.get("subject") || "Website Enquiry");
+    const message = String(data.get("message") || "");
+
+    const body = [
+      `Name: ${name}`,
+      `Email: ${email}`,
+      `Phone: ${phone}`,
+      ``,
+      `Message:`,
+      message,
+    ].join("\n");
+
+    window.location.href = `mailto:${EMAIL}?subject=${encodeURIComponent(
+      subject
+    )}&body=${encodeURIComponent(body)}`;
+
     setTimeout(() => {
       setSubmitting(false);
-      toast.success("Message sent! We'll be in touch soon.");
-      (e.target as HTMLFormElement).reset();
-    }, 700);
+      toast.success("Opening your email app to send the message...");
+    }, 400);
   };
 
   const locations = ["Nigeria (HQ)", "Botswana", "Ghana", "South Africa", "Uganda", "Kenya"];
@@ -80,30 +102,33 @@ const Contact = () => {
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="name">Full Name</Label>
-                    <Input id="name" required className="mt-1.5" />
+                    <Input id="name" name="name" required className="mt-1.5" />
                   </div>
                   <div>
                     <Label htmlFor="email">Email</Label>
-                    <Input id="email" type="email" required className="mt-1.5" />
+                    <Input id="email" name="email" type="email" required className="mt-1.5" />
                   </div>
                 </div>
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="phone">Phone</Label>
-                    <Input id="phone" className="mt-1.5" />
+                    <Input id="phone" name="phone" className="mt-1.5" />
                   </div>
                   <div>
                     <Label htmlFor="subject">Subject</Label>
-                    <Input id="subject" placeholder="Enrollment, Partnership, etc." className="mt-1.5" />
+                    <Input id="subject" name="subject" placeholder="Enrollment, Partnership, etc." className="mt-1.5" />
                   </div>
                 </div>
                 <div>
                   <Label htmlFor="message">Message</Label>
-                  <Textarea id="message" rows={6} required className="mt-1.5" />
+                  <Textarea id="message" name="message" rows={6} required className="mt-1.5" />
                 </div>
                 <Button type="submit" variant="hero" size="lg" disabled={submitting}>
-                  {submitting ? "Sending..." : <>Send Message <Send /></>}
+                  {submitting ? "Opening email..." : <>Send Message <Send /></>}
                 </Button>
+                <p className="text-xs text-muted-foreground text-center">
+                  Your message will be sent to {EMAIL}
+                </p>
               </div>
             </form>
           </Reveal>
