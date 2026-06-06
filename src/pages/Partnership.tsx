@@ -118,39 +118,37 @@ const EMAIL = "teeiinstitute@gmail.com";
 
 const Partnership = () => {
   const [submitting, setSubmitting] = useState(false);
+  const [sent, setSent] = useState(false);
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSubmitting(true);
-    const data = new FormData(e.target as HTMLFormElement);
-    const org = String(data.get("org") || "");
-    const name = String(data.get("name") || "");
-    const role = String(data.get("role") || "");
-    const email = String(data.get("email") || "");
-    const phone = String(data.get("phone") || "");
-    const message = String(data.get("message") || "");
+    const form = e.target as HTMLFormElement;
+    const data = new FormData(form);
+    const payload = {
+      organization: String(data.get("org") || "").slice(0, 200),
+      contact_name: String(data.get("name") || "").slice(0, 100),
+      email: String(data.get("email") || "").slice(0, 255),
+      phone: String(data.get("phone") || "").slice(0, 50) || null,
+      partnership_type: String(data.get("role") || "").slice(0, 100) || null,
+      message: String(data.get("message") || "").slice(0, 2000),
+    };
 
-    const body = [
-      `Partnership request from ${org}`,
-      ``,
-      `Organization: ${org}`,
-      `Contact Name: ${name}`,
-      `Role: ${role}`,
-      `Email: ${email}`,
-      `Phone: ${phone}`,
-      ``,
-      `How they want to partner:`,
-      message,
-    ].join("\n");
-
-    window.location.href = `mailto:${EMAIL}?subject=${encodeURIComponent(
-      `Partnership Request — ${org}`
-    )}&body=${encodeURIComponent(body)}`;
-
-    setTimeout(() => {
+    if (!payload.organization || !payload.contact_name || !payload.email || !payload.message) {
+      toast.error("Please fill in all required fields.");
       setSubmitting(false);
-      toast.success("Sending your request...");
-    }, 400);
+      return;
+    }
+
+    const { error } = await supabase.from("partnership_inquiries").insert(payload);
+    setSubmitting(false);
+    if (error) {
+      toast.error("Something went wrong. Please try again.");
+      return;
+    }
+    setSent(true);
+    form.reset();
+    toast.success("Thank you! Your partnership request has been received.");
   };
 
   const col1 = focusAreas.filter((_, i) => i % 2 === 0);
