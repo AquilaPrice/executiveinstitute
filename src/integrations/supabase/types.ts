@@ -14,7 +14,99 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      contact_submissions: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          message: string
+          name: string
+          phone: string | null
+          subject: string | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          message: string
+          name: string
+          phone?: string | null
+          subject?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          message?: string
+          name?: string
+          phone?: string | null
+          subject?: string | null
+        }
+        Relationships: []
+      }
+      partnership_inquiries: {
+        Row: {
+          contact_name: string
+          created_at: string
+          email: string
+          id: string
+          message: string
+          organization: string
+          partnership_type: string | null
+          phone: string | null
+        }
+        Insert: {
+          contact_name: string
+          created_at?: string
+          email: string
+          id?: string
+          message: string
+          organization: string
+          partnership_type?: string | null
+          phone?: string | null
+        }
+        Update: {
+          contact_name?: string
+          created_at?: string
+          email?: string
+          id?: string
+          message?: string
+          organization?: string
+          partnership_type?: string | null
+          phone?: string | null
+        }
+        Relationships: []
+      }
+      program_applications: {
+        Row: {
+          applicant_email: string
+          applicant_name: string
+          created_at: string
+          id: string
+          program_id: string
+          program_title: string
+          program_track: string
+        }
+        Insert: {
+          applicant_email: string
+          applicant_name: string
+          created_at?: string
+          id?: string
+          program_id: string
+          program_title: string
+          program_track: string
+        }
+        Update: {
+          applicant_email?: string
+          applicant_name?: string
+          created_at?: string
+          id?: string
+          program_id?: string
+          program_title?: string
+          program_track?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
