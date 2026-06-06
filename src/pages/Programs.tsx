@@ -23,6 +23,9 @@ import Layout from "@/components/Layout";
 import Reveal from "@/components/Reveal";
 import PageHero from "@/components/PageHero";
 import { Button } from "@/components/ui/button";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
+import { CheckCircle2 } from "lucide-react";
 import children from "@/assets/children.jpg";
 import teens from "@/assets/teens.jpg";
 import adults from "@/assets/adults.jpg";
@@ -184,36 +187,36 @@ const PROGRAMS: Program[] = [
 
 const TRACKS = ["All", "Children", "Teens", "Adults"] as const;
 
-const buildMailto = (p: Program, applicant?: { name: string; email: string }) => {
-  const subject = `Application — ${p.title} (${p.track})`;
-  const lines = [
-    `Hello TEEIL Team,`,
-    ``,
-    `I would like to apply for the program below:`,
-    ``,
-    `Program: ${p.title}`,
-    `Track:   ${p.track}`,
-    `Duration: ${p.duration}`,
-    `Mode:    ${p.mode}`,
-    ``,
-    `Applicant Details:`,
-    `Full Name: ${applicant?.name || "[Your full name]"}`,
-    `Email:     ${applicant?.email || "[Your email]"}`,
-    `Phone:     [Your phone number]`,
-    `Country:   [Your country]`,
-    ``,
-    `A short note about myself / why I am applying:`,
-    `[Write here]`,
-    ``,
-    `Thank you,`,
-  ];
-  return `mailto:${EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join("\n"))}`;
-};
-
 const ProgramCard = ({ p }: { p: Program }) => {
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [done, setDone] = useState(false);
+
+  const submit = async () => {
+    const n = name.trim();
+    const em = email.trim();
+    if (!n || !em) {
+      toast.error("Please enter your name and email.");
+      return;
+    }
+    setSubmitting(true);
+    const { error } = await supabase.from("program_applications").insert({
+      applicant_name: n.slice(0, 100),
+      applicant_email: em.slice(0, 255),
+      program_id: p.id,
+      program_title: p.title,
+      program_track: p.track,
+    });
+    setSubmitting(false);
+    if (error) {
+      toast.error("Something went wrong. Please try again.");
+      return;
+    }
+    setDone(true);
+    toast.success("Application received. Thank you!");
+  };
 
   return (
     <article className="group relative bg-card border border-border rounded-2xl overflow-hidden shadow-card hover:shadow-elegant transition-all flex flex-col">
@@ -246,7 +249,13 @@ const ProgramCard = ({ p }: { p: Program }) => {
         </ul>
 
         <div className="mt-6 pt-5 border-t border-border flex flex-col gap-3">
-          {!open ? (
+          {done ? (
+            <div className="text-center py-3 animate-fade-in">
+              <CheckCircle2 className="h-8 w-8 text-accent mx-auto" />
+              <p className="mt-2 font-bold text-primary text-sm">Thank you!</p>
+              <p className="text-xs text-muted-foreground mt-1">We've received your application and will reach out shortly.</p>
+            </div>
+          ) : !open ? (
             <Button variant="hero" onClick={() => setOpen(true)} className="w-full">
               Apply Now <ArrowRight />
             </Button>
@@ -267,12 +276,14 @@ const ProgramCard = ({ p }: { p: Program }) => {
                 className="w-full bg-background border border-border rounded-lg px-3 py-2 text-sm outline-none focus:border-accent"
                 maxLength={255}
               />
-              <a
-                href={buildMailto(p, { name: name.trim(), email: email.trim() })}
-                className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-gradient-accent text-accent-foreground font-semibold px-4 py-2.5 text-sm shadow-glow hover:scale-[1.02] transition-transform"
+              <button
+                type="button"
+                onClick={submit}
+                disabled={submitting}
+                className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-gradient-accent text-accent-foreground font-semibold px-4 py-2.5 text-sm shadow-glow hover:scale-[1.02] transition-transform disabled:opacity-70"
               >
-                <Mail className="h-4 w-4" /> Send Application
-              </a>
+                {submitting ? "Submitting..." : <>Submit Application</>}
+              </button>
             </div>
           )}
         </div>

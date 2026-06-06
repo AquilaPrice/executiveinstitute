@@ -24,6 +24,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 import partnership from "@/assets/partnership.jpg";
 
 const focusAreas = [
@@ -117,39 +118,37 @@ const EMAIL = "teeiinstitute@gmail.com";
 
 const Partnership = () => {
   const [submitting, setSubmitting] = useState(false);
+  const [sent, setSent] = useState(false);
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSubmitting(true);
-    const data = new FormData(e.target as HTMLFormElement);
-    const org = String(data.get("org") || "");
-    const name = String(data.get("name") || "");
-    const role = String(data.get("role") || "");
-    const email = String(data.get("email") || "");
-    const phone = String(data.get("phone") || "");
-    const message = String(data.get("message") || "");
+    const form = e.target as HTMLFormElement;
+    const data = new FormData(form);
+    const payload = {
+      organization: String(data.get("org") || "").slice(0, 200),
+      contact_name: String(data.get("name") || "").slice(0, 100),
+      email: String(data.get("email") || "").slice(0, 255),
+      phone: String(data.get("phone") || "").slice(0, 50) || null,
+      partnership_type: String(data.get("role") || "").slice(0, 100) || null,
+      message: String(data.get("message") || "").slice(0, 2000),
+    };
 
-    const body = [
-      `Partnership request from ${org}`,
-      ``,
-      `Organization: ${org}`,
-      `Contact Name: ${name}`,
-      `Role: ${role}`,
-      `Email: ${email}`,
-      `Phone: ${phone}`,
-      ``,
-      `How they want to partner:`,
-      message,
-    ].join("\n");
-
-    window.location.href = `mailto:${EMAIL}?subject=${encodeURIComponent(
-      `Partnership Request — ${org}`
-    )}&body=${encodeURIComponent(body)}`;
-
-    setTimeout(() => {
+    if (!payload.organization || !payload.contact_name || !payload.email || !payload.message) {
+      toast.error("Please fill in all required fields.");
       setSubmitting(false);
-      toast.success("Sending your request...");
-    }, 400);
+      return;
+    }
+
+    const { error } = await supabase.from("partnership_inquiries").insert(payload);
+    setSubmitting(false);
+    if (error) {
+      toast.error("Something went wrong. Please try again.");
+      return;
+    }
+    setSent(true);
+    form.reset();
+    toast.success("Thank you! Your partnership request has been received.");
   };
 
   const col1 = focusAreas.filter((_, i) => i % 2 === 0);
@@ -205,45 +204,61 @@ const Partnership = () => {
           </Reveal>
 
           <Reveal delay={150}>
+            {sent ? (
+              <div id="partner-form" className="bg-card border border-border rounded-2xl p-8 shadow-elegant lg:sticky lg:top-28 text-center">
+                <div className="mx-auto h-14 w-14 rounded-full bg-gradient-accent text-accent-foreground grid place-items-center shadow-glow">
+                  <CheckCircle2 className="h-7 w-7" />
+                </div>
+                <h3 className="heading-md text-primary mt-5">Thank you!</h3>
+                <p className="mt-3 text-muted-foreground">
+                  Your partnership request has been received. Our team will be in touch shortly to schedule a discovery call.
+                </p>
+                <Button variant="outline" className="mt-6" onClick={() => setSent(false)}>
+                  Submit another request
+                </Button>
+              </div>
+            ) : (
             <form onSubmit={onSubmit} id="partner-form" className="bg-card border border-border rounded-2xl p-6 sm:p-8 shadow-elegant lg:sticky lg:top-28">
               <h3 className="heading-md text-primary">Request Partnership</h3>
               <p className="mt-2 text-muted-foreground text-sm">Tell us about your organization and we'll get back to you.</p>
               <div className="mt-6 grid gap-4">
                 <div>
                   <Label htmlFor="org">Organization Name</Label>
-                  <Input id="org" name="org" required placeholder="Your school or company" className="mt-1.5" />
+                  <Input id="org" name="org" required maxLength={200} placeholder="Your school or company" className="mt-1.5" />
                 </div>
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="name">Contact Name</Label>
-                    <Input id="name" name="name" required className="mt-1.5" />
+                    <Input id="name" name="name" required maxLength={100} className="mt-1.5" />
                   </div>
                   <div>
                     <Label htmlFor="role">Your Role</Label>
-                    <Input id="role" name="role" className="mt-1.5" />
+                    <Input id="role" name="role" maxLength={100} className="mt-1.5" />
                   </div>
                 </div>
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="email">Email</Label>
-                    <Input id="email" name="email" type="email" required className="mt-1.5" />
+                    <Input id="email" name="email" type="email" required maxLength={255} className="mt-1.5" />
                   </div>
                   <div>
                     <Label htmlFor="phone">Phone</Label>
-                    <Input id="phone" name="phone" className="mt-1.5" />
+                    <Input id="phone" name="phone" maxLength={50} className="mt-1.5" />
                   </div>
                 </div>
                 <div>
                   <Label htmlFor="message">How can we partner?</Label>
-                  <Textarea id="message" name="message" required rows={5} className="mt-1.5" placeholder="Briefly describe what you have in mind..." />
+                  <Textarea id="message" name="message" required rows={5} maxLength={2000} className="mt-1.5" placeholder="Briefly describe what you have in mind..." />
                 </div>
                 <Button type="submit" variant="hero" size="lg" disabled={submitting}>
                   {submitting ? "Sending..." : <>Submit Request <Send /></>}
                 </Button>
               </div>
             </form>
+            )}
           </Reveal>
         </div>
+
       </section>
 
       {/* Partnership tiers */}

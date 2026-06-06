@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Mail, Phone, MapPin, Send, Globe2 } from "lucide-react";
+import { Mail, Phone, MapPin, Send, Globe2, CheckCircle2 } from "lucide-react";
 import Layout from "@/components/Layout";
 import Reveal from "@/components/Reveal";
 import PageHero from "@/components/PageHero";
@@ -8,40 +8,42 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 const EMAIL = "teeiinstitute@gmail.com";
 
 const Contact = () => {
   const [submitting, setSubmitting] = useState(false);
+  const [sent, setSent] = useState(false);
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSubmitting(true);
     const form = e.target as HTMLFormElement;
     const data = new FormData(form);
-    const name = String(data.get("name") || "");
-    const email = String(data.get("email") || "");
-    const phone = String(data.get("phone") || "");
-    const subject = String(data.get("subject") || "Website Enquiry");
-    const message = String(data.get("message") || "");
+    const payload = {
+      name: String(data.get("name") || "").slice(0, 100),
+      email: String(data.get("email") || "").slice(0, 255),
+      phone: String(data.get("phone") || "").slice(0, 50) || null,
+      subject: String(data.get("subject") || "").slice(0, 200) || null,
+      message: String(data.get("message") || "").slice(0, 2000),
+    };
 
-    const body = [
-      `Name: ${name}`,
-      `Email: ${email}`,
-      `Phone: ${phone}`,
-      ``,
-      `Message:`,
-      message,
-    ].join("\n");
-
-    window.location.href = `mailto:${EMAIL}?subject=${encodeURIComponent(
-      subject
-    )}&body=${encodeURIComponent(body)}`;
-
-    setTimeout(() => {
+    if (!payload.name || !payload.email || !payload.message) {
+      toast.error("Please fill in all required fields.");
       setSubmitting(false);
-      toast.success("Opening your email app to send the message...");
-    }, 400);
+      return;
+    }
+
+    const { error } = await supabase.from("contact_submissions").insert(payload);
+    setSubmitting(false);
+    if (error) {
+      toast.error("Something went wrong. Please try again.");
+      return;
+    }
+    setSent(true);
+    form.reset();
+    toast.success("Thank you! Your message has been received.");
   };
 
   const locations = ["Nigeria (HQ)", "Botswana", "Ghana", "South Africa", "Uganda", "Kenya"];
@@ -95,6 +97,20 @@ const Contact = () => {
           </Reveal>
 
           <Reveal delay={150} className="lg:col-span-3">
+            {sent ? (
+              <div className="bg-card border border-border rounded-2xl p-10 shadow-elegant text-center">
+                <div className="mx-auto h-14 w-14 rounded-full bg-gradient-accent text-accent-foreground grid place-items-center shadow-glow">
+                  <CheckCircle2 className="h-7 w-7" />
+                </div>
+                <h2 className="heading-md text-primary mt-5">Thank you!</h2>
+                <p className="mt-3 text-muted-foreground">
+                  Your message has been received. Our team will get back to you within 1–2 business days.
+                </p>
+                <Button variant="outline" className="mt-6" onClick={() => setSent(false)}>
+                  Send another message
+                </Button>
+              </div>
+            ) : (
             <form onSubmit={onSubmit} className="bg-card border border-border rounded-2xl p-8 shadow-elegant">
               <h2 className="heading-md text-primary">Send us a message</h2>
               <p className="mt-2 text-muted-foreground text-sm">We respond within 1–2 business days.</p>
@@ -102,35 +118,36 @@ const Contact = () => {
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="name">Full Name</Label>
-                    <Input id="name" name="name" required className="mt-1.5" />
+                    <Input id="name" name="name" required maxLength={100} className="mt-1.5" />
                   </div>
                   <div>
                     <Label htmlFor="email">Email</Label>
-                    <Input id="email" name="email" type="email" required className="mt-1.5" />
+                    <Input id="email" name="email" type="email" required maxLength={255} className="mt-1.5" />
                   </div>
                 </div>
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="phone">Phone</Label>
-                    <Input id="phone" name="phone" className="mt-1.5" />
+                    <Input id="phone" name="phone" maxLength={50} className="mt-1.5" />
                   </div>
                   <div>
                     <Label htmlFor="subject">Subject</Label>
-                    <Input id="subject" name="subject" placeholder="Enrollment, Partnership, etc." className="mt-1.5" />
+                    <Input id="subject" name="subject" maxLength={200} placeholder="Enrollment, Partnership, etc." className="mt-1.5" />
                   </div>
                 </div>
                 <div>
                   <Label htmlFor="message">Message</Label>
-                  <Textarea id="message" name="message" rows={6} required className="mt-1.5" />
+                  <Textarea id="message" name="message" rows={6} required maxLength={2000} className="mt-1.5" />
                 </div>
                 <Button type="submit" variant="hero" size="lg" disabled={submitting}>
-                  {submitting ? "Opening email..." : <>Send Message <Send /></>}
+                  {submitting ? "Sending..." : <>Send Message <Send /></>}
                 </Button>
                 <p className="text-xs text-muted-foreground text-center">
-                  Your message will be sent to {EMAIL}
+                  We'll review your message and respond as soon as possible.
                 </p>
               </div>
             </form>
+            )}
           </Reveal>
         </div>
       </section>
