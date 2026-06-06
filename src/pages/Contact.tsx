@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Mail, Phone, MapPin, Send, Globe2 } from "lucide-react";
+import { Mail, Phone, MapPin, Send, Globe2, CheckCircle2 } from "lucide-react";
 import Layout from "@/components/Layout";
 import Reveal from "@/components/Reveal";
 import PageHero from "@/components/PageHero";
@@ -8,40 +8,42 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 const EMAIL = "teeiinstitute@gmail.com";
 
 const Contact = () => {
   const [submitting, setSubmitting] = useState(false);
+  const [sent, setSent] = useState(false);
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSubmitting(true);
     const form = e.target as HTMLFormElement;
     const data = new FormData(form);
-    const name = String(data.get("name") || "");
-    const email = String(data.get("email") || "");
-    const phone = String(data.get("phone") || "");
-    const subject = String(data.get("subject") || "Website Enquiry");
-    const message = String(data.get("message") || "");
+    const payload = {
+      name: String(data.get("name") || "").slice(0, 100),
+      email: String(data.get("email") || "").slice(0, 255),
+      phone: String(data.get("phone") || "").slice(0, 50) || null,
+      subject: String(data.get("subject") || "").slice(0, 200) || null,
+      message: String(data.get("message") || "").slice(0, 2000),
+    };
 
-    const body = [
-      `Name: ${name}`,
-      `Email: ${email}`,
-      `Phone: ${phone}`,
-      ``,
-      `Message:`,
-      message,
-    ].join("\n");
-
-    window.location.href = `mailto:${EMAIL}?subject=${encodeURIComponent(
-      subject
-    )}&body=${encodeURIComponent(body)}`;
-
-    setTimeout(() => {
+    if (!payload.name || !payload.email || !payload.message) {
+      toast.error("Please fill in all required fields.");
       setSubmitting(false);
-      toast.success("Opening your email app to send the message...");
-    }, 400);
+      return;
+    }
+
+    const { error } = await supabase.from("contact_submissions").insert(payload);
+    setSubmitting(false);
+    if (error) {
+      toast.error("Something went wrong. Please try again.");
+      return;
+    }
+    setSent(true);
+    form.reset();
+    toast.success("Thank you! Your message has been received.");
   };
 
   const locations = ["Nigeria (HQ)", "Botswana", "Ghana", "South Africa", "Uganda", "Kenya"];
