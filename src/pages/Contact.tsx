@@ -97,6 +97,20 @@ const Contact = () => {
           </Reveal>
 
           <Reveal delay={150} className="lg:col-span-3">
+            {sent ? (
+              <div className="bg-card border border-border rounded-2xl p-10 shadow-elegant text-center">
+                <div className="mx-auto h-14 w-14 rounded-full bg-gradient-accent text-accent-foreground grid place-items-center shadow-glow">
+                  <CheckCircle2 className="h-7 w-7" />
+                </div>
+                <h2 className="heading-md text-primary mt-5">Thank you!</h2>
+                <p className="mt-3 text-muted-foreground">
+                  Your message has been received. Our team will get back to you within 1–2 business days.
+                </p>
+                <Button variant="outline" className="mt-6" onClick={() => setSent(false)}>
+                  Send another message
+                </Button>
+              </div>
+            ) : (
             <form onSubmit={onSubmit} className="bg-card border border-border rounded-2xl p-8 shadow-elegant">
               <h2 className="heading-md text-primary">Send us a message</h2>
               <p className="mt-2 text-muted-foreground text-sm">We respond within 1–2 business days.</p>
@@ -104,35 +118,36 @@ const Contact = () => {
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="name">Full Name</Label>
-                    <Input id="name" name="name" required className="mt-1.5" />
+                    <Input id="name" name="name" required maxLength={100} className="mt-1.5" />
                   </div>
                   <div>
                     <Label htmlFor="email">Email</Label>
-                    <Input id="email" name="email" type="email" required className="mt-1.5" />
+                    <Input id="email" name="email" type="email" required maxLength={255} className="mt-1.5" />
                   </div>
                 </div>
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="phone">Phone</Label>
-                    <Input id="phone" name="phone" className="mt-1.5" />
+                    <Input id="phone" name="phone" maxLength={50} className="mt-1.5" />
                   </div>
                   <div>
                     <Label htmlFor="subject">Subject</Label>
-                    <Input id="subject" name="subject" placeholder="Enrollment, Partnership, etc." className="mt-1.5" />
+                    <Input id="subject" name="subject" maxLength={200} placeholder="Enrollment, Partnership, etc." className="mt-1.5" />
                   </div>
                 </div>
                 <div>
                   <Label htmlFor="message">Message</Label>
-                  <Textarea id="message" name="message" rows={6} required className="mt-1.5" />
+                  <Textarea id="message" name="message" rows={6} required maxLength={2000} className="mt-1.5" />
                 </div>
                 <Button type="submit" variant="hero" size="lg" disabled={submitting}>
-                  {submitting ? "Opening email..." : <>Send Message <Send /></>}
+                  {submitting ? "Sending..." : <>Send Message <Send /></>}
                 </Button>
                 <p className="text-xs text-muted-foreground text-center">
-                  Your message will be sent to {EMAIL}
+                  We'll review your message and respond as soon as possible.
                 </p>
               </div>
             </form>
+            )}
           </Reveal>
         </div>
       </section>
