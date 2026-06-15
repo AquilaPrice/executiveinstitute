@@ -288,6 +288,26 @@ const Index = () => {
         subtitle="We equip children, teens, and adults with academic excellence, life principles, and leadership skills to become who they are meant to be."
       />
 
+      {/* VIDEO SECTION */}
+      <section className="bg-background py-16 md:py-24">
+        <div className="container-tight">
+          <div className="mx-auto max-w-5xl">
+            <div className="relative w-full overflow-hidden rounded-2xl shadow-elegant border border-border">
+              <div className="aspect-video">
+                <iframe
+                  className="absolute inset-0 h-full w-full"
+                  src="https://www.youtube.com/embed/ui8MtdsT4YE?autoplay=1&mute=1&loop=1&playlist=ui8MtdsT4YE&rel=0&modestbranding=1&playsinline=1"
+                  title="TEEIL Intro Video"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* TRUST STRIP */}
       <section className="bg-primary text-primary-foreground py-6 overflow-hidden border-y border-accent/30">
         <div className="marquee whitespace-nowrap">
