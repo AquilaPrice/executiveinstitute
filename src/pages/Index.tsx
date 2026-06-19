@@ -582,19 +582,20 @@ const Index = () => {
           </Reveal>
           <div className="grid md:grid-cols-3 gap-6">
             {blogPreview.map((b, i) => (
-              <Reveal key={b.slug} delay={i * 100}>
+              <Reveal key={b.id} delay={i * 100}>
                 <Link
                   to={`/blog/${b.slug}`}
                   className="group block bg-card border border-border rounded-2xl overflow-hidden shadow-card hover:shadow-elegant transition-all hover:-translate-y-1 h-full"
                 >
                   <div className="relative aspect-[16/10] overflow-hidden">
-                    <img src={b.image} alt={b.title} loading="lazy" className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-700" />
-                    <span className="absolute top-3 left-3 bg-accent text-accent-foreground text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-full">{b.category}</span>
+                    <img src={b.cover_image || about} alt={b.title} loading="lazy" className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-700" />
                   </div>
                   <div className="p-6">
-                    <p className="text-xs text-muted-foreground">{b.date}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {new Date(b.published_at ?? b.created_at).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" })}
+                    </p>
                     <h3 className="heading-serif text-xl text-primary mt-2 group-hover:text-accent transition-colors">{b.title}</h3>
-                    <p className="mt-3 text-sm text-muted-foreground leading-relaxed">{b.excerpt}</p>
+                    {b.excerpt && <p className="mt-3 text-sm text-muted-foreground leading-relaxed">{b.excerpt}</p>}
                     <span className="mt-4 inline-flex items-center gap-2 text-accent font-semibold text-sm">
                       Read more <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                     </span>
@@ -603,6 +604,7 @@ const Index = () => {
               </Reveal>
             ))}
           </div>
+
         </div>
       </section>
 
