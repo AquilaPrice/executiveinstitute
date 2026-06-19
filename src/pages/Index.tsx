@@ -28,9 +28,17 @@ import about from "@/assets/about.jpg";
 import children from "@/assets/children.jpg";
 import teens from "@/assets/teens.jpg";
 import adults from "@/assets/adults.jpg";
-import { posts as blogPosts } from "./Blog";
+import { supabase } from "@/integrations/supabase/client";
 
-const blogPreview = blogPosts.slice(0, 3);
+interface BlogPreview {
+  id: string;
+  slug: string;
+  title: string;
+  excerpt: string | null;
+  cover_image: string | null;
+  published_at: string | null;
+  created_at: string;
+}
 
 const offerings = [
   { icon: BookOpen, title: "Academic Tutoring", desc: "Strong foundations in core subjects with personalized support." },
