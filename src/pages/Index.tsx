@@ -284,6 +284,21 @@ const Index = () => {
   const col1 = offerings.filter((_, i) => i % 2 === 0);
   const col2 = offerings.filter((_, i) => i % 2 === 1);
 
+  const [blogPreview, setBlogPreview] = useState<BlogPreview[]>([]);
+  useEffect(() => {
+    (async () => {
+      const { data } = await supabase
+        .from("blog_posts")
+        .select("id,slug,title,excerpt,cover_image,published_at,created_at")
+        .eq("published", true)
+        .order("published_at", { ascending: false, nullsFirst: false })
+        .order("created_at", { ascending: false })
+        .limit(3);
+      setBlogPreview((data ?? []) as BlogPreview[]);
+    })();
+  }, []);
+
+
   return (
     <Layout>
       <PageHero
